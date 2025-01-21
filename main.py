@@ -14,4 +14,8 @@ async def main():
 
 
 if __name__ == "__main__":
+    print("""\t\t\tAuto Fishing
+Для запуска и выключения захвата экрана нажмите ctrl+` (ctrl+ё)
+Для помощи по командам введите help или h""")
+
     asyncio.run(main())

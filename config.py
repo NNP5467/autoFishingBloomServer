@@ -1,9 +1,11 @@
 import screeninfo
 
-monitor = screeninfo.get_monitors()[0]
 
-auto_fishing_running = False
-tts = False
+def cmd_print(*args: object, **kwargs: object) -> None:
+    print(">", *args, **kwargs)
+
+
+monitor = screeninfo.get_monitors()[0]
 
 pos_0 = None
 pos_1 = None

@@ -5,21 +5,45 @@ import keyboard
 import config
 
 from PIL import ImageGrab
-from config import s_w, s_h
+from config import s_w, s_h, cmd_print
+
+detect = False
+
+
+def d():
+    global detect
+    detect = not detect
+    cmd_print("Захват экрана", "включен" if detect else "выключен")
 
 
 async def main() -> None:
-    run = False
+    keyboard.add_hotkey("ctrl+`", d)
+
     while True:
         await asyncio.sleep(0.01)
-        if keyboard.is_pressed("F4"):
-            run = not run
 
-        if config.auto_fishing_running and run:
-            # start_pos = (s_w / 2 - s_w * 0.26, s_h / 2 - s_h * 0.15)
-            # end_pos = (s_w / 2 + s_w * 0.26, s_h / 2)
+        if detect:
+            if config.pos_0 is None:
+                start_pos = (s_w / 2 - s_w * 0.26, s_h / 2 - s_h * 0.15)
+            else:
+                start_pos = config.pos_0
+            if config.pos_1 is None:
+                end_pos = (s_w / 2 + s_w * 0.26, s_h / 2)
+            else:
+                end_pos = config.pos_1
 
-            # screenshot = ImageGrab.grab((*start_pos, *end_pos))
-            # screenshot.save(".\\screenshot.png")
-            # break
-            pass
+            screenshot = ImageGrab.grab((*start_pos, *end_pos))
+            
+            try:
+                has_yellow_color = False
+                for i in screenshot.getcolors(256):
+                    rgb = i[1]
+                    if rgb[0] == 0 and rgb[1] == 0 and rgb[2] == 0:
+                        has_yellow_color = True
+                        break
+
+                if has_yellow_color:
+                    pyautogui.click(button="left")
+                    await asyncio.sleep(0.08)
+            except TypeError:
+                pass
