@@ -30,8 +30,10 @@ def start_pos(argc: int, argv: list) -> None:
 
         if config.s_w >= argv[0] >= 0 and config.s_h >= argv[1] >= 0:
             config.pos_0 = (argv[0], argv[1])
+            config.save_settings()
     elif len(argv) >= 1 and argv[0] == "default":
         config.pos_0 = None
+        config.save_settings()
 
 
 def end_pos(argc: int, argv: list) -> None:
@@ -41,8 +43,10 @@ def end_pos(argc: int, argv: list) -> None:
 
         if config.s_w >= argv[0] >= 0 and config.s_h >= argv[1] >= 0:
             config.pos_1 = (argv[0], argv[1])
+            config.save_settings()
     elif len(argv) >= 1 and argv[0] == "default":
         config.pos_1 = None
+        config.save_settings()
 
 
 def help(argc: int, argv: list) -> None:

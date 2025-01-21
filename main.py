@@ -2,11 +2,12 @@ import asyncio
 
 import user_cmd
 import auto_fishing
+import config
 
 
 async def main():
     try:
-        await asyncio.gather(user_cmd.cmd(), auto_fishing.main())
+        await asyncio.gather(user_cmd.cmd(), auto_fishing.main(), config.is_fish())
     except Exception as e:
         print("Произошла непредвиденная ошибка. Если это критически повлияло на "
               "работу программы, пожалуйста, отправьте скриншот ошибки и "

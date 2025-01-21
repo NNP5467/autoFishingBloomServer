@@ -7,13 +7,10 @@ import config
 from PIL import ImageGrab
 from config import s_w, s_h, cmd_print
 
-detect = False
-
 
 def d():
-    global detect
-    detect = not detect
-    cmd_print("Захват экрана", "включен" if detect else "выключен")
+    config.detect = not config.detect
+    cmd_print("Захват экрана", "включен" if config.detect else "выключен")
 
 
 async def main() -> None:
@@ -22,7 +19,7 @@ async def main() -> None:
     while True:
         await asyncio.sleep(0.01)
 
-        if detect:
+        if config.detect:
             if config.pos_0 is None:
                 start_pos = (s_w / 2 - s_w * 0.26, s_h / 2 - s_h * 0.15)
             else:
@@ -38,12 +35,14 @@ async def main() -> None:
                 has_yellow_color = False
                 for i in screenshot.getcolors(256):
                     rgb = i[1]
-                    if rgb[0] == 0 and rgb[1] == 0 and rgb[2] == 0:
+                    if rgb[0] == 12 and rgb[1] == 12 and rgb[2] == 12:
                         has_yellow_color = True
                         break
 
                 if has_yellow_color:
-                    pyautogui.click(button="left")
-                    await asyncio.sleep(0.08)
+                    config.fish = True
+                    print("click!")
+                    pyautogui.click(button="right")
+                    await asyncio.sleep(0.5)
             except TypeError:
                 pass
