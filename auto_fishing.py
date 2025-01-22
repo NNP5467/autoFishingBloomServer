@@ -32,7 +32,7 @@ async def main() -> None:
             screenshot = ImageGrab.grab((*start_pos, *end_pos))
             
             try:
-                for coord, i in enumerate(screenshot.getcolors(256)):
+                for coord, i in enumerate(screenshot.getcolors(100000)):
                     rgb = i[1]
                     if rgb == (252, 212, 0):
                         config.fish = True
