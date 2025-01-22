@@ -35,7 +35,7 @@ async def main() -> None:
                 has_yellow_color = False
                 for i in screenshot.getcolors(256):
                     rgb = i[1]
-                    if rgb[0] == 12 and rgb[1] == 12 and rgb[2] == 12:
+                    if rgb[0] == 252 and rgb[1] == 212 and rgb[2] == 0:
                         has_yellow_color = True
                         break
 
