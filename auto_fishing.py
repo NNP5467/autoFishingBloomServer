@@ -32,17 +32,14 @@ async def main() -> None:
             screenshot = ImageGrab.grab((*start_pos, *end_pos))
             
             try:
-                has_yellow_color = False
-                for i in screenshot.getcolors(256):
+                for coord, i in enumerate(screenshot.getcolors(256)):
                     rgb = i[1]
-                    if rgb[0] == 252 and rgb[1] == 212 and rgb[2] == 0:
-                        has_yellow_color = True
+                    if rgb == (252, 212, 0):
+                        config.fish = True
+                        cmd_print("click!", f"{rgb = }  {coord = }")
+                        pyautogui.click(button="right")
+                        await asyncio.sleep(0.5)
                         break
 
-                if has_yellow_color:
-                    config.fish = True
-                    print("click!")
-                    pyautogui.click(button="right")
-                    await asyncio.sleep(0.5)
             except TypeError:
-                pass
+                cmd_print("TypeError")
