@@ -21,25 +21,26 @@ async def main() -> None:
 
         if config.detect:
             if config.pos_0 is None:
-                start_pos = (s_w / 2 - s_w * 0.26, s_h / 2 - s_h * 0.15)
+                start_pos = (s_w / 2 - s_w * 0.26, s_h / 2 - s_h * 0.13)
             else:
                 start_pos = config.pos_0
             if config.pos_1 is None:
-                end_pos = (s_w / 2 + s_w * 0.26, s_h / 2)
+                end_pos = (s_w / 2 + s_w * 0.26, s_h / 2 - s_h * 0.09)
             else:
                 end_pos = config.pos_1
 
             screenshot = ImageGrab.grab((*start_pos, *end_pos))
             
             try:
-                for coord, i in enumerate(screenshot.getcolors(100000)):
+                for i in screenshot.getcolors(1000000):
                     rgb = i[1]
-                    if rgb == (252, 212, 0):
+                    if rgb == config.yellow:
                         config.fish = True
-                        cmd_print("click!", f"{rgb = }  {coord = }")
                         pyautogui.click(button="right")
-                        await asyncio.sleep(0.5)
+                        cmd_print("Обнаружил жёлтый цвет!")
                         break
 
             except TypeError:
-                cmd_print("TypeError")
+                cmd_print("Произошла непредвиденная ошибка. Если это критически повлияло на "
+                          "работу программы, пожалуйста, отправьте скриншот ошибки и "
+                          "обстоятельства, при которых она произошла, разработчику ПО. \n", "TypeError")

@@ -8,7 +8,7 @@ import json
 
 def save_settings():
     with open(os.path.join(path, "config.json"), "w", encoding="utf-8-sig") as file:
-        json.dump({"pos_0": pos_0, "pos_1": pos_1}, file, indent=4)
+        json.dump({"pos_0": pos_0, "pos_1": pos_1, "yellow": yellow}, file, indent=4)
 
 
 def cmd_print(*args: object, **kwargs: object) -> None:
@@ -33,6 +33,7 @@ monitor = screeninfo.get_monitors()[0]
 
 pos_0 = None
 pos_1 = None
+yellow = (252, 213, 0)
 
 s_w = monitor.width
 s_h = monitor.height
@@ -45,5 +46,6 @@ try:
         file = json.load(file)
         pos_0 = file["pos_0"]
         pos_1 = file["pos_1"]
+        yellow = file["yellow"]
 except FileNotFoundError:
     pass
