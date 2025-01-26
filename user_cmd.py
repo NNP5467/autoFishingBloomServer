@@ -6,7 +6,8 @@ commands = {
     "help": ["h", "help"],
     "start_pos": ["stpos", "start_pos"],
     "end_pos": ["epos", "end_pos"],
-    "set_yellow": ["syel", "set_yellow"]
+    "set_yellow": ["syel", "set_yellow"],
+    "set_delay": ["sd", "set_delay"]
 }
 
 
@@ -34,7 +35,7 @@ def start_pos(argc: int, argv: list) -> None:
             config.save_settings()
             config.cmd_print("Записано!")
     elif argc >= 1 and argv[0] == "default":
-        config.pos_0 = None
+        config.pos_0 = (config.s_w / 2 - config.s_w * 0.26, config.s_h / 2 - config.s_h * 0.15)
         config.save_settings()
         config.cmd_print("Записано!")
 
@@ -49,7 +50,7 @@ def end_pos(argc: int, argv: list) -> None:
             config.save_settings()
             config.cmd_print("Записано!")
     elif argc >= 1 and argv[0] == "default":
-        config.pos_1 = None
+        config.pos_1 = (config.s_w / 2 + config.s_w * 0.26, config.s_h / 2)
         config.save_settings()
         config.cmd_print("Записано!")
 
@@ -70,6 +71,20 @@ def set_yellow(argc: int, argv: list) -> None:
         config.cmd_print("Записано!")
 
 
+def set_delay(argc: int, argv: list):
+    if argc >= 1 and argv[0] == "default":
+        config.delay = 0
+        config.save_settings()
+        config.cmd_print("Записано!")
+    elif argc == 1:
+        argv[0] = float(argv[0])
+
+        if argv[0] > 0:
+            config.delay = argv[0]
+            config.save_settings()
+            config.cmd_print("Записано!")
+
+
 def help(argc: int, argv: list) -> None:
     config.cmd_print("""help:
     Команда help [h]: вызывает этот текст
@@ -84,4 +99,8 @@ def help(argc: int, argv: list) -> None:
     Команда set_yellow [syel] <r | default> <g | None> <b | None>: переопределяет жёлтый (захватываемый) цвет (default сбросит по умолчанию)
                      Примеры:
                         set_yellow 252 213 0
-                        set_yellow default""")
+                        set_yellow default
+    Команда set_delay [sd] <delay (в секундах) | default>: переопределяет задержку следующего броска (default сбросит по умолчанию)
+                     Примеры:
+                        set_delay 0.5
+                        set_delay default""")

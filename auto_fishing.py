@@ -5,7 +5,7 @@ import keyboard
 import config
 
 from PIL import ImageGrab
-from config import s_w, s_h, cmd_print
+from config import pos_0, pos_1, cmd_print
 
 
 def d():
@@ -20,16 +20,7 @@ async def main() -> None:
         await asyncio.sleep(0.01)
 
         if config.detect:
-            if config.pos_0 is None:
-                start_pos = (s_w / 2 - s_w * 0.26, s_h / 2 - s_h * 0.13)
-            else:
-                start_pos = config.pos_0
-            if config.pos_1 is None:
-                end_pos = (s_w / 2 + s_w * 0.26, s_h / 2 - s_h * 0.09)
-            else:
-                end_pos = config.pos_1
-
-            screenshot = ImageGrab.grab((*start_pos, *end_pos))
+            screenshot = ImageGrab.grab((*pos_0, *pos_1))
             
             try:
                 for i in screenshot.getcolors(1000000):
@@ -38,6 +29,7 @@ async def main() -> None:
                         config.fish = True
                         pyautogui.click(button="right")
                         cmd_print("Обнаружил жёлтый цвет!")
+                        await asyncio.sleep(config.delay)
                         break
 
             except TypeError:

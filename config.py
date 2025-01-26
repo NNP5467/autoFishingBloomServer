@@ -8,7 +8,12 @@ import json
 
 def save_settings():
     with open(os.path.join(path, "config.json"), "w", encoding="utf-8-sig") as file:
-        json.dump({"pos_0": pos_0, "pos_1": pos_1, "yellow": yellow}, file, indent=4)
+        json.dump({
+            "pos_0": pos_0,
+            "pos_1": pos_1,
+            "yellow": yellow,
+            "delay": delay
+        }, file, indent=4)
 
 
 def cmd_print(*args: object, **kwargs: object) -> None:
@@ -31,12 +36,13 @@ os.makedirs(path, exist_ok=True)
 
 monitor = screeninfo.get_monitors()[0]
 
-pos_0 = None
-pos_1 = None
-yellow = (252, 213, 0)
-
 s_w = monitor.width
 s_h = monitor.height
+
+pos_0 = (s_w / 2 - s_w * 0.26, s_h / 2 - s_h * 0.15)
+pos_1 = (s_w / 2 + s_w * 0.26, s_h / 2)
+yellow = (252, 213, 0)
+delay = 0
 
 detect = False
 fish = False
@@ -47,5 +53,6 @@ try:
         pos_0 = file["pos_0"]
         pos_1 = file["pos_1"]
         yellow = file["yellow"]
+        delay = file["delay"]
 except FileNotFoundError:
     pass
