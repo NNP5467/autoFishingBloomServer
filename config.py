@@ -25,10 +25,13 @@ async def is_fish():
     while True:
         await asyncio.sleep(0.01)
         if fish:
-            await asyncio.sleep(5)
-            pyautogui.click(button="right")
-            fish = False
-            print("ok")
+            if fish == 1:
+                fish -= 1
+                pyautogui.click(button="right")
+                print("ok")
+            else:
+                await asyncio.sleep(4)
+                fish -= 1
 
 
 path = os.path.join(os.getenv("APPDATA"), "autoFishingBloomServer")

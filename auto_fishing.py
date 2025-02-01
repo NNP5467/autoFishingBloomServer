@@ -26,7 +26,7 @@ async def main() -> None:
                 for i in screenshot.getcolors(1000000):
                     rgb = i[1]
                     if rgb == config.yellow:
-                        config.fish = True
+                        config.fish += 2
                         pyautogui.click(button="right")
                         cmd_print("Обнаружил жёлтый цвет!")
                         await asyncio.sleep(config.delay)
