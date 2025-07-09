@@ -1,0 +1,5 @@
+pyautogui
+screeninfo
+keyboard
+colorama
+pillow

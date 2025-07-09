@@ -1,61 +1,46 @@
 import screeninfo
-import asyncio
-import pyautogui
 
-import os
-import json
+from log import log
 
-
-def save_settings():
-    with open(os.path.join(path, "config.json"), "w", encoding="utf-8-sig") as file:
-        json.dump({
-            "pos_0": pos_0,
-            "pos_1": pos_1,
-            "yellow": yellow,
-            "delay": delay
-        }, file, indent=4)
+# red = (94, 23, 36)
+# gray = (249, 249, 249)
+# pink = (208, 172, 250)
+# yellow = (31, 31, 6)
 
 
-def cmd_print(*args: object, **kwargs: object) -> None:
-    print(">", *args, **kwargs)
+def red_in_pixels(pixels: list) -> bool:
+    for pixel in pixels:
+        if 90 < pixel[0] < 100 and 20 < pixel[1] < 30 and 30 < pixel[2] < 40:
+            return True
+    return False
+def gray_in_pixels(pixels: list) -> bool:
+    for pixel in pixels:
+        if 245 < pixel[0] < 250 and 245 < pixel[1] < 250 and 245 < pixel[2] < 250:
+            return True
+    return False
+def pink_in_pixels(pixels: list) -> bool:
+    for pixel in pixels:
+        if 205 < pixel[0] < 210 and 168 < pixel[1] < 175 and 245 < pixel[2] < 252:
+            return True
+    return False
+def yellow_in_pixels(pixels: list) -> bool:
+    for pixel in pixels:
+        if 25 < pixel[0] < 33 and 25 < pixel[1] < 33 and 2 < pixel[2] < 8:
+            return True
+    return False
 
 
-async def is_fish():
-    global fish
-    while True:
-        await asyncio.sleep(0.01)
-        if fish:
-            if fish == 1:
-                fish -= 1
-                pyautogui.click(button="right")
-                print("ok")
-            else:
-                await asyncio.sleep(4)
-                fish -= 1
+log("init monitors", 0)
+monitors = screeninfo.get_monitors()
+if len(monitors) > 1:
+    log("Ошибка инициализации монитора: не поддерживается больше 1 монитора")
+if (monitors[0].width, monitors[0].height) == (1366, 768):
+    pos = [(438 + 88 * i, 351) for i in range(6)]
+elif (monitors[0].width, monitors[0].height) == (1917, 1070):
+    pos = [(592 + 132 * i, 471) for i in range(6)]
+else:
+    log("Ошибка инициализации монитора: разрешение должно быть либо 1366x768 или 1917х1070", 4)
 
-
-path = os.path.join(os.getenv("APPDATA"), "autoFishingBloomServer")
-os.makedirs(path, exist_ok=True)
-
-monitor = screeninfo.get_monitors()[0]
-
-s_w = monitor.width
-s_h = monitor.height
-
-pos_0 = (s_w / 2 - s_w * 0.26, s_h / 2 - s_h * 0.15)
-pos_1 = (s_w / 2 + s_w * 0.26, s_h / 2)
-yellow = (252, 213, 0)
-delay = 0
-
-detect = False
-fish = False
-
-try:
-    with open(os.path.join(path, "config.json"), "r", encoding="utf-8-sig") as file:
-        file = json.load(file)
-        pos_0 = file["pos_0"]
-        pos_1 = file["pos_1"]
-        yellow = file["yellow"]
-        delay = file["delay"]
-except FileNotFoundError:
-    pass
+log("init vars", 0)
+is_capture = False
+old_pixels = None
