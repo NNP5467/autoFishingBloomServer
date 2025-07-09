@@ -4,7 +4,7 @@ import colorama
 
 from colorama import Fore
 
-__debug = True
+__debug = False
 
 def log(message: str, level: int = 1):
     if __debug and level == 0:
